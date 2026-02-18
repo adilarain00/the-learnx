@@ -183,29 +183,30 @@ const LoginForm: FC<Props> = ({ setRoute, setOpen, refetch }) => {
 
         <div className='grid grid-cols-2 gap-3'>
           <button
-            type='button'
+            type="button"
             className={styles.combineStyles(
               styles.buttonStyles.base,
               styles.buttonStyles.secondary,
               styles.buttonStyles.small,
               'justify-center'
             )}
-            onClick={() => signIn('google')}
+            onClick={() => signIn('google', { callbackUrl: '/' })}
           >
-            <FcGoogle size={18} className='mr-2' />
+            <FcGoogle size={18} className="mr-2" />
             Google
           </button>
+
           <button
-            type='button'
+            type="button"
             className={styles.combineStyles(
               styles.buttonStyles.base,
               styles.buttonStyles.secondary,
               styles.buttonStyles.small,
               'justify-center'
             )}
-            onClick={() => signIn('github')}
+            onClick={() => signIn('github', { callbackUrl: '/' })}
           >
-            <AiFillGithub size={18} className='mr-2' />
+            <AiFillGithub size={18} className="mr-2" />
             GitHub
           </button>
         </div>

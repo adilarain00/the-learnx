@@ -283,38 +283,65 @@ export const refreshUserAccessToken = catchAsyncError(
   }
 );
 
+// server/controllers/userController.ts
 interface ISocialAuthBody {
-  email: string;
-  name: string;
-  avatar: string;
+  email?: string;
+  name?: string;
+  avatar?: string;
 }
 
 export const authenticateWithSocialMedia = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { email, name, avatar } = req.body as ISocialAuthBody;
-      const user = await User.findOne({ email });
+      const { email, name, avatar }: ISocialAuthBody = req.body || {};
+
+      if (!email || !name) {
+        return next(
+          new errorHandler(
+            "Social login requires a valid email and name.",
+            400
+          )
+        );
+      }
+
+      const normalizedEmail = email.trim().toLowerCase();
+      const normalizedName = name.trim();
+
+      if (!normalizedEmail || !normalizedName) {
+        return next(
+          new errorHandler(
+            "Social login requires non-empty email and name.",
+            400
+          )
+        );
+      }
+
+      const avatarUrl = (avatar || "").trim();
+
+      let user = await User.findOne({ email: normalizedEmail });
+
       if (!user) {
-        const newUser = await User.create({
-          email,
-          name,
-          avatar: {
-            public_id: "",
-            url: avatar,
-          },
+        user = await User.create({
+          email: normalizedEmail,
+          name: normalizedName,
+          avatar: avatarUrl
+            ? {
+              public_id: "",
+              url: avatarUrl,
+            }
+            : undefined,
         });
-        sendToken(newUser, 200, res);
       } else {
-        // Update existing user's avatar if they don't have one
-        if (!user.avatar?.url && avatar) {
+        if (!user.avatar?.url && avatarUrl) {
           user.avatar = {
-            public_id: "",
-            url: avatar,
+            public_id: user.avatar?.public_id || "",
+            url: avatarUrl,
           };
           await user.save();
         }
-        sendToken(user, 200, res);
       }
+
+      sendToken(user, 200, res);
     } catch (error: any) {
       return next(
         new errorHandler("Social authentication failed. Please try again.", 500)

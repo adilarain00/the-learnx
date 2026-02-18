@@ -169,43 +169,71 @@ interface IAddQuestionData {
 
 export const addCourseQuestion = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { question, courseId, contentId }: IAddQuestionData = req.body;
+    const { question, courseId, contentId } = req.body;
 
-      const course = await Course.findById(courseId);
-      const courseContent = course?.courseData?.find((item: any) =>
-        item._id.equals(contentId)
-      );
-
-      if (!courseContent) {
-        return next(new errorHandler("Course content not found.", 404));
-      }
-
-      const newQuestion: any = {
-        user: req.user,
-        question,
-        questionReplies: [],
-      };
-
-      courseContent.questions.push(newQuestion);
-      await Notification.create({
-        user: req.user?._id,
-        title: "New Question Received",
-        message: `You have a new question in ${course?.name}`,
-      });
-
-      await course?.save();
-      res.status(200).json({
-        success: true,
-        course,
-      });
-    } catch (error: any) {
-      return next(
-        new errorHandler("Failed to add question. Please try again.", 500)
-      );
+    if (!question || !courseId || !contentId) {
+      return next(new errorHandler("All fields are required.", 400));
     }
+
+    const course = await Course.findById(courseId);
+
+    if (!course) {
+      return next(new errorHandler("Course not found.", 404));
+    }
+
+    // 🔥 FIXED ID MATCHING
+    const courseContent = course.courseData.find(
+      (item: any) => item._id.toString() === contentId.toString()
+    );
+
+    if (!courseContent) {
+      return next(new errorHandler("Course content not found.", 404));
+    }
+
+    if (!req.user) {
+      return next(new errorHandler("User not authenticated", 401));
+    }
+
+
+    const newQuestion = {
+      user: {
+        _id: req.user._id,
+        name: req.user.name,
+        avatar: {
+          public_id: req.user.avatar?.public_id || "",
+          url: req.user.avatar?.url || "",
+        },
+        role: req.user.role,
+      },
+      question: question.trim(),
+      questionReplies: [],
+    };
+    courseContent.questions.push(newQuestion as any);
+    await course.save();
+
+
+
+    if (!Array.isArray(courseContent.questions)) {
+      courseContent.questions = [];
+    }
+
+    courseContent.questions.push(newQuestion as any)
+
+    await course.save();
+
+    await Notification.create({
+      user: req.user._id,
+      title: "New Question Received",
+      message: `You have a new question in ${course.name}`,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Question added successfully",
+    });
   }
 );
+
 
 interface IAddAnswerData {
   answer: string;

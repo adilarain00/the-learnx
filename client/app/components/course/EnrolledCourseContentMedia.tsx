@@ -375,7 +375,7 @@ const EnrolledCourseContentMedia = ({
                   'w-[120px] h-[40px] text-base'
                 )} ${questionCreationLoading && 'cursor-not-allowed'}`}
                 onClick={
-                  questionCreationLoading ? () => {} : handleQuestionSubmit
+                  questionCreationLoading ? () => { } : handleQuestionSubmit
                 }
               >
                 {questionCreationLoading ? 'Submitting...' : 'Submit'}
@@ -459,7 +459,7 @@ const EnrolledCourseContentMedia = ({
                       reviewCreationLoading ? 'cursor-not-allowed' : ''
                     )}
                     onClick={
-                      reviewCreationLoading ? () => {} : handleReviewSubmit
+                      reviewCreationLoading ? () => { } : handleReviewSubmit
                     }
                   >
                     {reviewCreationLoading ? 'Submitting...' : 'Submit'}
@@ -565,7 +565,7 @@ const EnrolledCourseContentMedia = ({
                               )}
                               onClick={
                                 reviewReplyCreationLoading
-                                  ? () => {}
+                                  ? () => { }
                                   : handleReviewReplySubmit
                               }
                             >
@@ -752,10 +752,11 @@ const CommentItem = ({
                   'flex items-start gap-2 bg-slate-50 dark:bg-slate-900'
                 )}
               >
+
                 <Image
                   src={
-                    reply.user.avatar
-                      ? reply.user.avatar.url
+                    item?.user?.avatar?.url
+                      ? item.user.avatar.url
                       : 'https://res.cloudinary.com/dnrxdohf7/image/upload/v1753601987/layout/q4ifxx7kefbglwvpk0ch.png'
                   }
                   width={32}

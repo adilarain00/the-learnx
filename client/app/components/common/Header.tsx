@@ -50,7 +50,7 @@ const Header: FC<HeaderProps> = ({
     refetch,
   } = useLoadUserQuery(undefined, {});
 
-  const {} = useLogOutQuery(undefined, {
+  const { } = useLogOutQuery(undefined, {
     skip: !logout ? true : false,
   });
 
@@ -89,9 +89,8 @@ const Header: FC<HeaderProps> = ({
   return (
     <div className='w-full relative'>
       <div
-        className={`fixed top-0 left-0 w-full h-[80px] z-[80] bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 transition duration-300 ${
-          active ? 'shadow-lg backdrop-blur-md' : ''
-        }`}
+        className={`fixed top-0 left-0 w-full h-[80px] z-[80] bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 transition duration-300 ${active ? 'shadow-lg backdrop-blur-md' : ''
+          }`}
       >
         <div className={styles.sectionStyles.container}>
           <div className='w-full h-[80px] flex items-center justify-between'>
@@ -121,10 +120,9 @@ const Header: FC<HeaderProps> = ({
                     alt='User Avatar'
                     width={25}
                     height={25}
-                    className={`w-[25px] h-[25px] rounded-full cursor-pointer ${
-                      activeItem === 5 &&
+                    className={`w-[25px] h-[25px] rounded-full cursor-pointer ${activeItem === 5 &&
                       'border-2 border-purple-600 dark:border-purple-400'
-                    }`}
+                      }`}
                   />
                 </Link>
               ) : (

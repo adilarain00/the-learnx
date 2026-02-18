@@ -3,7 +3,6 @@ import { IUser } from "./User";
 
 export interface IComment extends Document {
   user: IUser;
-  comment: string;
   question: string;
   questionReplies: IComment[];
 }
@@ -103,8 +102,9 @@ const courseSchema = new Schema<ICourse>(
     },
     categories: {
       type: String,
-      required: true,
+      required: false,
     },
+
     price: {
       type: Number,
       required: true,

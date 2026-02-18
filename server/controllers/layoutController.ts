@@ -4,6 +4,36 @@ import errorHandler from "../utils/errorHandler";
 import Layout from "../models/Layout";
 import cloudinary from "cloudinary";
 
+const normalizeCategoryTitles = (categories: any) => {
+  if (!Array.isArray(categories)) {
+    throw new errorHandler("Categories must be an array.", 400);
+  }
+
+  const normalized = categories.map((item: any) => {
+    const title = typeof item?.title === "string" ? item.title.trim() : "";
+    return { title };
+  });
+
+  const hasEmpty = normalized.some((c) => !c.title);
+  if (hasEmpty) {
+    throw new errorHandler("Category title cannot be empty.", 400);
+  }
+
+  const seen = new Set<string>();
+  for (const c of normalized) {
+    const key = c.title.toLowerCase();
+    if (seen.has(key)) {
+      throw new errorHandler(
+        `Duplicate category detected: "${c.title}".`,
+        409
+      );
+    }
+    seen.add(key);
+  }
+
+  return normalized;
+};
+
 export const createWebsiteLayoutByAdmin = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -50,13 +80,7 @@ export const createWebsiteLayoutByAdmin = catchAsyncError(
       }
       if (type === "Categories") {
         const { categories } = req.body;
-        const categoriesItems = await Promise.all(
-          categories.map(async (item: any) => {
-            return {
-              title: item.title,
-            };
-          })
-        );
+        const categoriesItems = normalizeCategoryTitles(categories);
         await Layout.create({
           type: "Categories",
           categories: categoriesItems,
@@ -68,7 +92,11 @@ export const createWebsiteLayoutByAdmin = catchAsyncError(
         message: `${type} layout created successfully.`,
       });
     } catch (error: any) {
-      return next(new errorHandler(error.message, 500));
+      return next(
+        error instanceof errorHandler
+          ? error
+          : new errorHandler(error.message, 500)
+      );
     }
   }
 );
@@ -122,20 +150,21 @@ export const updateWebsiteLayoutByAdmin = catchAsyncError(
       }
       if (type === "Categories") {
         const { categories } = req.body;
-        const categoriesData = await Layout.findOne({
-          type: "Categories",
-        });
-        const categoriesItems = await Promise.all(
-          categories.map(async (item: any) => {
-            return {
-              title: item.title,
-            };
-          })
+        const categoriesItems = normalizeCategoryTitles(categories);
+
+        // Upsert so admin UI works even if Categories layout doesn't exist yet
+        const layout = await Layout.findOneAndUpdate(
+          { type: "Categories" },
+          { $set: { type: "Categories", categories: categoriesItems } },
+          { new: true, upsert: true, runValidators: true }
         );
-        await Layout.findByIdAndUpdate(categoriesData?._id, {
-          type: "Categories",
-          categories: categoriesItems,
+
+        res.status(200).json({
+          success: true,
+          message: `${type} layout updated successfully.`,
+          layout,
         });
+        return;
       }
 
       res.status(200).json({
@@ -144,7 +173,9 @@ export const updateWebsiteLayoutByAdmin = catchAsyncError(
       });
     } catch (error: any) {
       return next(
-        new errorHandler("Failed to update layout. Please try again.", 500)
+        error instanceof errorHandler
+          ? error
+          : new errorHandler("Failed to update layout. Please try again.", 500)
       );
     }
   }
