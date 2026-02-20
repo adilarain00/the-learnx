@@ -25,6 +25,16 @@ From DRM-protected streaming to Stripe-powered transactions and live platform in
   <a href="https://aadil-amjad.me/project/the-learnx" target="_blank">
     <img src="https://img.shields.io/badge/📝 Case_Study-4CAF50?style=for-the-badge&logo=&logoColor=white" />
   </a>
+
+  <!-- ✍️ Blog (Portfolio) -->
+  <a href="https://aadil-amjad.me/blog/the-smart-cart" target="_blank">
+    <img src="https://img.shields.io/badge/Blog-FF9800?style=for-the-badge&logo=googlescholar&logoColor=white" />
+  </a>
+
+  <!-- 🔗 LinkedIn Post -->
+  <a href="https://www.linkedin.com/posts/adilarain00_mern-fullstackdevelopment-ecommerce-activity-7378328560085819392-y1ci?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE9gbZABjWJQao04XHSlnY-6-rfc8s4LNrc" target="_blank">
+    <img src="https://img.shields.io/badge/🔗 LinkedIn_Post-0A66C2?style=for-the-badge&logo=&logoColor=white" />
+  </a>
 </p>
 
 ---
@@ -88,40 +98,41 @@ From DRM-protected streaming to Stripe-powered transactions and live platform in
 
 ```plaintext
 client/
-├── public/
-├── redux/
-├── app/
-│ ├── about/
-│ ├── admin/
-│ ├── api/
-│ ├── components/
-│ ├── course/
-│ ├── course-access/
-│ ├── courses/
-│ ├── faq/
-│ ├── hooks/
-│ ├── privacy/
-│ ├── profile/
-│ ├── providers/
-│ ├── static/
-│ ├── styles/
-│ ├── global.css
-│ ├── layout.tsx
-│ └── page.tsx
+├── public/                     # Static assets (images, favicon, thumbnails)
+├── redux/                      # Redux Toolkit store, slices & RTK Query APIs
+├── app/                        # Next.js App Router structure
+│ ├── about/                    # About page
+│ ├── admin/                    # Admin dashboard & management pages
+│ ├── api/                      # Next.js API routes (if any)
+│ ├── components/               # Reusable UI components
+│ ├── course/                   # Single course details & learning pages
+│ ├── course-access/            # Protected course access pages
+│ ├── courses/                  # Course listing & discovery pages
+│ ├── faq/                      # FAQ page
+│ ├── hooks/                    # Custom React hooks
+│ ├── privacy/                  # Privacy policy page
+│ ├── profile/                  # User profile & dashboard
+│ ├── providers/                # Context providers (Auth, Theme, etc.)
+│ ├── static/                   # Static constants & configuration data
+│ ├── styles/                   # Global & modular styling files
+│ ├── global.css                # Global CSS styles
+│ ├── layout.tsx                # Root layout component
+│ └── page.tsx                  # Landing / Home page
 
 server/
-├── controllers/
-├── db
-├── dist
-├── middleware/
-├── models/
-├── routes/
-├── services/
-├── utils/
-├── @types/
-├── .env
-├── index.ts
-└── socketServer.ts
+├── controllers/                # Business logic for routes
+├── db/                         # Database connection configuration
+├── dist/                       # Compiled TypeScript build output
+├── middleware/                 # Auth, role-based & error middleware
+├── models/                     # Mongoose schemas & database models
+├── routes/                     # Express route definitions
+├── services/                   # External integrations (Stripe, VdoCipher, Email)
+├── utils/                      # Helper functions & utilities
+├── @types/                     # Custom TypeScript type definitions
+├── .env                        # Environment variables
+├── index.ts                    # Express server entry point
+└── socketServer.ts             # Socket.io real-time server setup
+
 ```
 
 ---

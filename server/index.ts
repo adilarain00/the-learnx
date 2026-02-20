@@ -46,8 +46,8 @@ app.use(cookieParser());
 
 // Rate limiting middleware
 const limiter = rateLimit({
-  windowMs: process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000,
-  max: process.env.RATE_LIMIT_MAX || 100,
+  max: Number(process.env.RATE_LIMIT_MAX) || 100,
+  windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 900000,
   handler: (req: Request, res: Response) => {
     res.status(429).json({
       success: false,
