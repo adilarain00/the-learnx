@@ -27,7 +27,7 @@ From DRM-protected streaming to Stripe-powered transactions and live platform in
   </a>
 
   <!-- ✍️ Blog (Portfolio) -->
-  <a href="https://aadil-amjad.me/blog/the-smart-cart" target="_blank">
+  <a href="https://aadil-amjad.me/blog/the-learnx" target="_blank">
     <img src="https://img.shields.io/badge/Blog-FF9800?style=for-the-badge&logo=googlescholar&logoColor=white" />
   </a>
 
