@@ -41,11 +41,7 @@ const reviewSchema = new mongoose_1.Schema({
         default: 0,
     },
     comment: String,
-    // Always an array to avoid frontend `.length`/`.map` crashes
-    commentReplies: {
-        type: [mongoose_1.Schema.Types.Mixed],
-        default: [],
-    },
+    commentReplies: [Object],
 }, { timestamps: true });
 const linkSchema = new mongoose_1.Schema({
     title: String,
@@ -54,11 +50,7 @@ const linkSchema = new mongoose_1.Schema({
 const commentSchema = new mongoose_1.Schema({
     user: Object,
     question: String,
-    // Always an array to avoid frontend `.length`/`.map` crashes
-    questionReplies: {
-        type: [mongoose_1.Schema.Types.Mixed],
-        default: [],
-    },
+    questionReplies: [Object],
 }, { timestamps: true });
 const courseDataSchema = new mongoose_1.Schema({
     videoUrl: String,
@@ -83,7 +75,7 @@ const courseSchema = new mongoose_1.Schema({
     },
     categories: {
         type: String,
-        required: true,
+        required: false,
     },
     price: {
         type: Number,

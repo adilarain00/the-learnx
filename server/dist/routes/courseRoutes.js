@@ -15,7 +15,7 @@ router.get("/public/preview/:id", courseController_1.getCoursePublicPreview);
 router.get("/public/all-previews", courseController_1.getAllPublicCoursePreviews);
 router.get("/enrolled/content/:id", auth_1.isAuthenticated, courseController_1.getEnrolledCourseContent);
 router.put("/enrolled/question", auth_1.isAuthenticated, courseController_1.addCourseQuestion);
-router.put("/enrolled/answer", auth_1.isAuthenticated, (0, auth_1.authorizeRoles)("admin", "instructor"), courseController_1.addQuestionAnswer);
+router.put("/enrolled/answer", auth_1.isAuthenticated, courseController_1.addQuestionAnswer);
 router.put("/enrolled/review/:id", auth_1.isAuthenticated, courseController_1.addCourseReview);
 router.put("/enrolled/review-reply", auth_1.isAuthenticated, (0, auth_1.authorizeRoles)("admin"), courseController_1.addReviewReply);
 router.post("/video/getVdoCipherOTP", courseController_1.generateVideoUrl);

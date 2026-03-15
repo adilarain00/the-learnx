@@ -38,8 +38,8 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cookie_parser_1.default)());
 // Rate limiting middleware
 const limiter = (0, express_rate_limit_1.rateLimit)({
-    windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
     max: Number(process.env.RATE_LIMIT_MAX) || 100,
+    windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 900000,
     handler: (req, res) => {
         res.status(429).json({
             success: false,

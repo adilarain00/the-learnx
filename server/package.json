@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only index.ts",
     "build": "tsc",
-    "start": "node index.js",
+    "start": "node dist/index.js",
     "vercel-build": "echo 'No build needed for Vercel'",
     "test": "echo 'No tests specified'"
   },
